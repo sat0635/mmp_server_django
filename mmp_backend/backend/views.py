@@ -14,9 +14,12 @@ from math import sin,cos,sqrt,atan2,radians
 
 
 def get_list_coupon(request,personID):
-    queryset = Person.objects.all()
-    result=queryset
-    return HttpResponse(result)
+    queryset = IndividualCoupon.objects.filter(PERSONID=personID)
+    
+    for row in queryset:
+        print(row.STORENAME) 
+
+    return HttpResponse("1")
 
 def get_list_near_place(request,gpsx,gpsy):
     queryset = Place.objects.all()
@@ -45,8 +48,8 @@ def get_list_near_place(request,gpsx,gpsy):
             dictStore["NAME"]=row.NAME
             count+=1
             dict_list["key"+str(count)]=dictStore
-    temp=(json.dumps(dict_list, ensure_ascii=False))
-    return HttpResponse(temp)
+    result=(json.dumps(dict_list, ensure_ascii=False))
+    return HttpResponse(result)
 def get_list_near_store(request,gpsx,gpsy):
     queryset = Store.objects.all()
     dict_list={}
@@ -74,8 +77,8 @@ def get_list_near_store(request,gpsx,gpsy):
             dictStore["NAME"]=row.NAME
             count+=1
             dict_list["key"+str(count)]=dictStore
-    temp=(json.dumps(dict_list, ensure_ascii=False))
-    return HttpResponse(temp)
+    result=(json.dumps(dict_list, ensure_ascii=False))
+    return HttpResponse(result)
 def cal_distance(myLat, thisLat, dlon, dlat):
     a= sin(dlat / 2)**2 + cos(myLat) * cos(thisLat) * sin(dlon / 2)**2
     c = 2 * atan2(sqrt(a), sqrt(1 - a))

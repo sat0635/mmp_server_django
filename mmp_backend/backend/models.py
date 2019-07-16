@@ -2,6 +2,14 @@ from django.db import models
 
 # Create your models here.
 
+class IndividualCoupon(models.Model):
+        STORENAME=models.CharField(max_length=50)
+        NAME=models.CharField(max_length=50)
+        PERSONID=models.CharField(max_length=50)
+        
+        def __str__(self):
+                return self.PERSONID
+
 class Coupon(models.Model):
         STORENAME=models.CharField(max_length=50)
         NAME=models.CharField(max_length=50)
