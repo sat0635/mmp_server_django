@@ -11,8 +11,8 @@ import json
 import pprint
 from math import sin,cos,sqrt,atan2,radians
 
-class VersionViewSet(generics.RetrieveUpdateDestroyAPIView):
-    queryset=Test.objects.all() 
+class VersionViewSet(generics.ListCreateAPIView):
+    queryset=Place.objects.all() 
     serializer_class=VersionSerializer
 
 

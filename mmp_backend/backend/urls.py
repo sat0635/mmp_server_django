@@ -6,5 +6,5 @@ urlpatterns = [
     path('nearstore/<gpsx>/<gpsy>/', views.get_list_near_store),
     path('nearplace/<gpsx>/<gpsy>/', views.get_list_near_place),
     path('coupon/<personID>/', views.get_list_coupon),
-    path('<int:pk>/',views.VersionViewSet.as_view() ),
+    path('',views.VersionViewSet.as_view() ),
 ]
