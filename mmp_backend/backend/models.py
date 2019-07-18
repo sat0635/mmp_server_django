@@ -2,6 +2,8 @@ from django.db import models
 
 # Create your models here.
 
+
+
 class IndividualCoupon(models.Model):
         STORENAME=models.CharField(max_length=50)
         NAME=models.CharField(max_length=50)
@@ -45,3 +47,10 @@ class Place(models.Model):
         def __str__(self):
                 return self.NAME
 
+
+
+class Test(models.Model):
+	version = models.CharField(max_length=10)
+
+	def __str__(self):
+		return self.version
