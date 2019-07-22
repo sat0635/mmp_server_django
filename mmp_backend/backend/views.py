@@ -5,36 +5,33 @@ from rest_framework import generics
 from rest_framework import viewsets
 from .models import Store
 from backend.models import *
-from .serializers import VersionSerializer
 from django.http import HttpResponse , JsonResponse
 import json
 from math import sin,cos,sqrt,atan2,radians
 from functools import wraps
 
-class VersionViewSet(generics.ListCreateAPIView):
-    queryset=Place.objects.all() 
-    serializer_class=VersionSerializer
 
 
-def get_list_coupon(request,personID):
-    dict_list={}
-    queryset = IndividualCoupon.objects.filter(PERSONID=personID)
-    count=0
+def get_list_coupon(request,userid):
+    dict_list=[]
+    queryset = IndividualCoupon.objects.filter(USERID=userid)
     for row in queryset:
-        dictCoupon={}
-        dictCoupon["PERSONID"]=personID       
-        dictCoupon["STORENAME"]=row.STORENAME
-        dictCoupon["NAME"]=row.NAME
-        count+=1
-        dict_list["key"+str(count)]=dictCoupon
-    result=(json.dumps(dict_list,ensure_ascii=False))
+        instance = Coupon.objects.filter(id=row.COUPONID)
+	
+        for row2 in instance:
+            dictCoupon={}
+            dictCoupon["STORENAME"]=row2.STORENAME
+            dictCoupon["NAME"]=row2.NAME
+            dictCoupon["IMAGE"]="http://106.10.35.40:8000/media/"+str(row2.IMAGE)
+            dictCoupon["COUPONID"]=row.COUPONID
+            dict_list.append(dictCoupon)
 
-    return HttpResponse(result)
+    result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
+    return HttpResponse(result, content_type=u"application/json; charset=utf-8")
 
 def get_list_near_place(request,gpsx,gpsy):
     queryset = Place.objects.all()
     dict_list=[]
-    dict_dict={}
     R=6373.0
 
     myLat=radians(float(gpsx))
@@ -47,7 +44,7 @@ def get_list_near_place(request,gpsx,gpsy):
         thisLon=radians(float(row.GPSY))
         distance = cal_distance(myLat, thisLat, thisLat - myLat, thisLon - myLon)
         distance = distance * R
-        #less than 10km
+        #less than 20km
         if ( distance < 20.0):
             dictPlace["GPSX"]=row.GPSX
             dictPlace["GPSY"]=row.GPSY
@@ -59,7 +56,6 @@ def get_list_near_place(request,gpsx,gpsy):
             dist=str(distance).split(".")[0]+"."+str(distance).split(".")[1][:3]
             dictPlace["DISTANCE"]=dist+"km"
             dictPlace["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
-            count+=1
             dict_list.append(dictPlace)
     result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
     return HttpResponse(result, content_type=u"application/json; charset=utf-8")
@@ -80,7 +76,7 @@ def get_list_near_store(request,gpsx,gpsy):
         thisLon=radians(float(row.GPSY))
         distance = cal_distance(myLat, thisLat, thisLat - myLat, thisLon - myLon)
         distance = distance * R
-        #less than 10km
+        #less than 20km
         if ( distance < 20.0):
             dictStore["GPSX"]=row.GPSX
             dictStore["GPSY"]=row.GPSY
@@ -92,7 +88,6 @@ def get_list_near_store(request,gpsx,gpsy):
             dist=str(distance).split(".")[0]+"."+str(distance).split(".")[1][:3]
             dictStore["DISTANCE"]=dist+"km"
             dictStore["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
-            count+=1
             dict_list.append(dictStore)
     result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
     return HttpResponse(result, content_type=u"application/json; charset=utf-8")

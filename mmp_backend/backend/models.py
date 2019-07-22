@@ -5,14 +5,15 @@ from django.db import models
 
 
 class IndividualCoupon(models.Model):
-        STORENAME=models.CharField(max_length=50)
-        NAME=models.CharField(max_length=50)
-        PERSONID=models.CharField(max_length=50)
-        
+        id = models.IntegerField(primary_key=True)
+        USERID=models.CharField(max_length=50)
+        COUPONID=models.IntegerField(default=0)
+
         def __str__(self):
-                return self.PERSONID
+                return self.USERID
 
 class Coupon(models.Model):
+        id = models.IntegerField(primary_key=True)
         STORENAME=models.CharField(max_length=50)
         NAME=models.CharField(max_length=50)
         IMAGENAME=models.CharField(max_length=50)
@@ -35,6 +36,7 @@ class Store(models.Model):
                 return self.NAME
 
 class Place(models.Model):
+
         GPSX = models.CharField(max_length=50)
         GPSY = models.CharField(max_length=50)
         LARG_CATE = models.CharField(max_length=50)
