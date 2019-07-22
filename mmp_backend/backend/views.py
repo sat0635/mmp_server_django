@@ -10,8 +10,17 @@ import json
 from math import sin,cos,sqrt,atan2,radians
 from functools import wraps
 
-
-
+def get_list_picture(request):
+    queryset = Picture.objects.all()
+    dict_list=[]
+    for row in queryset:
+        dictPicture={}
+        dictPicture["TITLE"]=row.TITLE
+        dictPicture["CONTENT"]=row.CONTENT
+        dictPicture["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
+        dict_list.append(dictPicture)
+    result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
+    return HttpResponse(result, content_type=u"application/json; charset=utf-8")
 def get_list_coupon(request,userid):
     dict_list=[]
     queryset = IndividualCoupon.objects.filter(USERID=userid)

@@ -2,7 +2,17 @@ from django.db import models
 
 # Create your models here.
 
-
+class Picture(models.Model):
+        id = models.IntegerField(primary_key=True)
+        USERID=models.CharField(max_length=50)
+        TITLE=models.CharField(max_length=50)
+        CONTENT=models.CharField(max_length=50)
+        IMAGE=models.ImageField(default='media/default_image.jpg')
+        start_time = models.DateTimeField(null=True,auto_now_add=True, blank=True)
+        updated_on = models.DateTimeField(auto_now=True)
+        def __str__(self):
+                #관리자페이지에서 보여질 데이터 이름
+                return self.TITLE
 
 class IndividualCoupon(models.Model):
         id = models.IntegerField(primary_key=True)
