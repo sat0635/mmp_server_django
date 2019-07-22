@@ -8,8 +8,8 @@ from backend.models import *
 from .serializers import VersionSerializer
 from django.http import HttpResponse , JsonResponse
 import json
-import pprint
 from math import sin,cos,sqrt,atan2,radians
+from functools import wraps
 
 class VersionViewSet(generics.ListCreateAPIView):
     queryset=Place.objects.all() 
@@ -42,33 +42,31 @@ def get_list_near_place(request,gpsx,gpsy):
 
     count=0
     for row in queryset:
-        dictStore={}
+        dictPlace={}
         thisLat=radians(float(row.GPSX))
         thisLon=radians(float(row.GPSY))
         distance = cal_distance(myLat, thisLat, thisLat - myLat, thisLon - myLon)
         distance = distance * R
         #less than 10km
         if ( distance < 20.0):
-            dictStore["GPSX"]=row.GPSX
-            dictStore["GPSY"]=row.GPSY
-            dictStore["DISTANCE"]=distance
-            dictStore["LARG_CATE"]=row.LARG_CATE
-            dictStore["MID_CATE"]=row.MID_CATE
-            dictStore["SMALL_CATE"]=row.SMALL_CATE
-            dictStore["NAME"]=row.NAME
+            dictPlace["GPSX"]=row.GPSX
+            dictPlace["GPSY"]=row.GPSY
+            dictPlace["DISTANCE"]=distance
+            dictPlace["LARG_CATE"]=row.LARG_CATE
+            dictPlace["MID_CATE"]=row.MID_CATE
+            dictPlace["SMALL_CATE"]=row.SMALL_CATE
+            dictPlace["NAME"]=row.NAME
+            dist=str(distance).split(".")[0]+"."+str(distance).split(".")[1][:3]
+            dictPlace["DISTANCE"]=dist+"km"
+            dictPlace["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
             count+=1
-            dict_list.append(dictStore)
-    dict_dict["data"]=dict_list
-    dict_temp={}
-    dict_temp["gpsx"]="lopal"
-    temp_list=[]
-    temp_list.append(dict_temp)
-    result=(json.dumps(temp_list, ensure_ascii=False))
-    return JsonResponse(result)
+            dict_list.append(dictPlace)
+    result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
+    return HttpResponse(result, content_type=u"application/json; charset=utf-8")
 
 def get_list_near_store(request,gpsx,gpsy):
     queryset = Store.objects.all()
-    dict_list={}
+    dict_list=[]
 
     R=6373.0
 
@@ -83,7 +81,7 @@ def get_list_near_store(request,gpsx,gpsy):
         distance = cal_distance(myLat, thisLat, thisLat - myLat, thisLon - myLon)
         distance = distance * R
         #less than 10km
-        if ( distance < 10.0):
+        if ( distance < 20.0):
             dictStore["GPSX"]=row.GPSX
             dictStore["GPSY"]=row.GPSY
             dictStore["DISTANCE"]=distance
@@ -91,10 +89,14 @@ def get_list_near_store(request,gpsx,gpsy):
             dictStore["MID_CATE"]=row.MID_CATE
             dictStore["SMALL_CATE"]=row.SMALL_CATE
             dictStore["NAME"]=row.NAME
+            dist=str(distance).split(".")[0]+"."+str(distance).split(".")[1][:3]
+            dictStore["DISTANCE"]=dist+"km"
+            dictStore["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
             count+=1
-            dict_list["key"+str(count)]=dictStore
-    result=(json.dumps(dict_list, ensure_ascii=False))
-    return HttpResponse(result)
+            dict_list.append(dictStore)
+    result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
+    return HttpResponse(result, content_type=u"application/json; charset=utf-8")
+
 def cal_distance(myLat, thisLat, dlon, dlat):
     a= sin(dlat / 2)**2 + cos(myLat) * cos(thisLat) * sin(dlon / 2)**2
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
