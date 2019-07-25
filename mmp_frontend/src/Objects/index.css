@@ -1,0 +1,19 @@
+.paper {
+    padding: theme.spacing(100);
+    textAlign: 'center';
+    color: theme.palette.text.secondary;
+  }
+  
+.avatar{
+    margin: 10;
+    width: 500;
+    height: 500;
+  }
+.box{
+    background:"red";
+    margin: 10;
+    width: 1000;
+    height: 1000;
+
+  }
+
