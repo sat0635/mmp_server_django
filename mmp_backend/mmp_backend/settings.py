@@ -86,17 +86,11 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
-
-        'NAME': 'MMP_DB',
-
-        'USER': 'mmp',
-
-        'PASSWORD': 'mmpknu',
-
-        'HOST': 'localhost',
-
-        'PORT': '3306'
-   
+        'NAME': 'MMP_DB', #mysql database name
+        'USER': 'mmp', #mysql user
+        'PASSWORD': 'mmpknu', #mysql user password
+        'HOST': 'localhost',#현재 아이피 주소
+        'PORT': '3306' #mysql 포트번호
     }
 }
 
