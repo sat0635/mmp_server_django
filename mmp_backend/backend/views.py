@@ -9,6 +9,8 @@ from django.http import HttpResponse , JsonResponse
 import json
 from math import sin,cos,sqrt,atan2,radians
 from functools import wraps
+
+base_url='http://106.10.35.40:8000/'
 def insert_user(request, userid):
     instance = User(USERID=userid)
     instance.save()
@@ -20,8 +22,7 @@ def get_list_event(request):
         dictEvent={}
         dictEvent["TITLE"]=row.TITLE
         dictEvent["CONTENT"]=row.CONTENT
-        dictEvent["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
-        print(row.start_time)
+        dictEvent["IMAGE"]=base_url+'media/'+str(row.IMAGE)
         dict_list.append(dictEvent)
     result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
     return HttpResponse(result, content_type=u"application/json; charset=utf-8")
@@ -32,7 +33,7 @@ def get_list_picture(request):
         dictPicture={}
         dictPicture["TITLE"]=row.TITLE
         dictPicture["CONTENT"]=row.CONTENT
-        dictPicture["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
+        dictPicture["IMAGE"]=base_url+'media/'+str(row.IMAGE)
         dict_list.append(dictPicture)
     result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
     return HttpResponse(result, content_type=u"application/json; charset=utf-8")
@@ -47,8 +48,8 @@ def get_list_coupon(request,userid):
             dictCoupon={}
             dictCoupon["STORENAME"]=row2.STORENAME
             dictCoupon["NAME"]=row2.NAME
-            dictCoupon["IMAGE"]="http://106.10.35.40:8000/media/"+str(row2.IMAGE)
             dictCoupon["COUPONID"]=row.COUPONID
+            dictCoupon["IMAGE"]=base_url+'media/'+str(row2.IMAGE)
             dict_list.append(dictCoupon)
 
     result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
@@ -80,7 +81,7 @@ def get_list_near_place(request,gpsx,gpsy):
             dictPlace["NAME"]=row.NAME
             dist=str(distance).split(".")[0]+"."+str(distance).split(".")[1][:3]
             dictPlace["DISTANCE"]=dist+"km"
-            dictPlace["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
+            dictPlace["IMAGE"]=base_url+'media/'+str(row.IMAGE)
             dict_list.append(dictPlace)
     result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
     return HttpResponse(result, content_type=u"application/json; charset=utf-8")
@@ -112,7 +113,7 @@ def get_list_near_store(request,gpsx,gpsy):
             dictStore["NAME"]=row.NAME
             dist=str(distance).split(".")[0]+"."+str(distance).split(".")[1][:3]
             dictStore["DISTANCE"]=dist+"km"
-            dictStore["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
+            dictStore["IMAGE"]=base_url+'media/'+str(row.IMAGE)
             dict_list.append(dictStore)
     result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
     return HttpResponse(result, content_type=u"application/json; charset=utf-8")
