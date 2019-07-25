@@ -2,10 +2,29 @@ from django.db import models
 
 # Create your models here.
 
+class Event(models.Model):
+        id = models.IntegerField(primary_key=True)
+        TITLE=models.CharField(max_length=20)
+        CONTENT=models.TextField(max_length=100)
+        IMAGE=models.ImageField(default='media/defualt_image.jpg')
+        start_time = models.DateTimeField(null=True,auto_now_add=True, blank=True)
+        updated_on = models.DateTimeField(auto_now=True)
+        def __str__(self):
+                return self.TITLE
+
+class User(models.Model):
+        USERID = models.CharField(max_length=50,unique=True)
+        LEVEL = models.IntegerField(default=0)
+        EXP = models.IntegerField(default=0)
+
+        INFO = models.TextField(max_length=500)
+        def __str__(self):
+                return self.USERID
+
 class Picture(models.Model):
         id = models.IntegerField(primary_key=True)
-        USERID=models.CharField(max_length=50)
-        TITLE=models.CharField(max_length=50)
+        USERID=models.CharField(max_length=20)
+        TITLE=models.CharField(max_length=20)
         CONTENT=models.CharField(max_length=50)
         IMAGE=models.ImageField(default='media/default_image.jpg')
         start_time = models.DateTimeField(null=True,auto_now_add=True, blank=True)

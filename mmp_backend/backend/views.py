@@ -9,7 +9,22 @@ from django.http import HttpResponse , JsonResponse
 import json
 from math import sin,cos,sqrt,atan2,radians
 from functools import wraps
+def insert_user(request, userid):
+    instance = User(USERID=userid)
+    instance.save()
 
+def get_list_event(request):
+    queryset = Event.objects.all()
+    dict_list=[]
+    for row in queryset:
+        dictEvent={}
+        dictEvent["TITLE"]=row.TITLE
+        dictEvent["CONTENT"]=row.CONTENT
+        dictEvent["IMAGE"]="http://106.10.35.40:8000/media/"+str(row.IMAGE)
+        print(row.start_time)
+        dict_list.append(dictEvent)
+    result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
+    return HttpResponse(result, content_type=u"application/json; charset=utf-8")
 def get_list_picture(request):
     queryset = Picture.objects.all()
     dict_list=[]
@@ -21,6 +36,7 @@ def get_list_picture(request):
         dict_list.append(dictPicture)
     result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
     return HttpResponse(result, content_type=u"application/json; charset=utf-8")
+
 def get_list_coupon(request,userid):
     dict_list=[]
     queryset = IndividualCoupon.objects.filter(USERID=userid)

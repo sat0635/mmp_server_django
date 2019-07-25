@@ -7,4 +7,6 @@ urlpatterns = [
     path('nearplace/<gpsx>/<gpsy>/', views.get_list_near_place),
     path('coupon/<userid>/', views.get_list_coupon),
     path('picture/', views.get_list_picture),
+    path('event/', views.get_list_event),
+    path('insertuser/<userid>/', views.insert_user),
 ]
