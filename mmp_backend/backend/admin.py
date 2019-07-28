@@ -7,6 +7,7 @@ from .models import Test
 from .models import Picture
 from .models import User
 from .models import Event
+from .models import Comment
 # Register your models here.
 
 admin.site.register(Event)
@@ -17,3 +18,4 @@ admin.site.register(Place)
 admin.site.register(Test)
 admin.site.register(Picture)
 admin.site.register(User)
+admin.site.register(Comment)

@@ -43,7 +43,7 @@ const Exercises = props =>{
               subtitle={<span>by: {tile.CONTENT}</span>}
               actionIcon={
                 <IconButton aria-label={`info about ${tile.TITLE}`} className={classes.icon}>
-                  <InfoIcon />
+			<InfoIcon />
                 </IconButton>
               }
             />

@@ -11,9 +11,39 @@ from math import sin,cos,sqrt,atan2,radians
 from functools import wraps
 
 base_url='http://106.10.35.40:8000/'
+
+def get_heart(request,pictureid):
+    queryset = Picture.objects.get(id=pictureid)
+    dict_list=[]
+
+    dictHeart={}
+    dictHeart["NUMBER"]=queryset.HEART
+    dict_list.append(dictHeart)
+    result=(json.dumps(dictHeart, ensure_ascii=False).encode('utf8') )
+    return HttpResponse(result, content_type=u"application/json; charset=utf-8")
+
+def send_heart(request, pictureid):
+    queryset = Picture.objects.get(id=pictureid)
+    queryset.HEART=queryset.HEART+1
+    queryset.save()
+
 def insert_user(request, userid):
     instance = User(USERID=userid)
     instance.save()
+
+def get_list_comment(request, pictureid):
+    queryset = Comment.objects.filter(PICTUREID=pictureid)
+    dict_list=[]
+    
+    for row in queryset:
+        dictComment={}
+        #dictComment["PICTUREID"]=row.PICTUREID
+        dictComment["TITLE"]=row.TITLE
+        dictComment["CONTENT"]=row.CONTENT
+        dictComment["IMAGE"]=base_url+'media/KGB.jpg'
+        dict_list.append(dictComment)
+    result=(json.dumps(dict_list, ensure_ascii=False).encode('utf8') )
+    return HttpResponse(result, content_type=u"application/json; charset=utf-8")
 
 def get_list_event(request):
     queryset = Event.objects.all()
@@ -31,6 +61,7 @@ def get_list_picture(request):
     dict_list=[]
     for row in queryset:
         dictPicture={}
+        dictPicture["ID"]=row.id
         dictPicture["TITLE"]=row.TITLE
         dictPicture["CONTENT"]=row.CONTENT
         dictPicture["IMAGE"]=base_url+'media/'+str(row.IMAGE)

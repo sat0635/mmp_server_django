@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Event(models.Model):
         id = models.IntegerField(primary_key=True)
         TITLE=models.CharField(max_length=20)
@@ -21,12 +22,23 @@ class User(models.Model):
         def __str__(self):
                 return self.USERID
 
+class Comment(models.Model):
+        id = models.IntegerField(primary_key=True)
+        USERID=models.CharField(max_length=50)
+        PICTUREID=models.IntegerField(default=0)
+        TITLE=models.CharField(max_length=50)
+        CONTENT=models.CharField(max_length=200)
+    
+        def __str__(self):
+                return self.TITLE
+
 class Picture(models.Model):
         id = models.IntegerField(primary_key=True)
         USERID=models.CharField(max_length=20)
         TITLE=models.CharField(max_length=20)
         CONTENT=models.CharField(max_length=50)
         IMAGE=models.ImageField(default='media/default_image.jpg')
+        HEART=models.IntegerField(default=0)
         start_time = models.DateTimeField(null=True,auto_now_add=True, blank=True)
         updated_on = models.DateTimeField(auto_now=True)
         def __str__(self):
